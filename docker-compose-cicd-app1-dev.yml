@@ -3,7 +3,7 @@ version: '3.7'
 services:
   cicd-app1-db:
     image: makwanji/cicd-app1-db:dev-latest
-    container_name: cicd-app1-db
+    container_name: cicd-app1-dev-db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
@@ -15,4 +15,4 @@ volumes:
 networks:
   default:
     external: true
-    name: cicd-app1
+    name: cicd-app1-dev
