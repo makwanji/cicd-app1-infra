@@ -5,19 +5,19 @@ services:
     image: nginx
     container_name: cicd-app1-uat-web
     ports:
-      - 280:80
+      - 380:80
   cicd-app1-uat-app:
     image: nginx
     container_name: cicd-app1-uat-app
     ports:
-      - 28080:8080
+      - 38080:8080
   cicd-app1-uat-db:
     image: makwanji/cicd-app1-db:sit-latest
     container_name: cicd-app1-uat-db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - 23306:3306
+      - 33306:3306
     volumes:
       - cicd-app1-uat-db-data:/var/lib/mysql
 volumes:
