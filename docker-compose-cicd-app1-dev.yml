@@ -7,7 +7,7 @@ services:
     ports:
       - 180:80
   cicd-app1-dev-app:
-    image: nginx
+    image: makwanji/cicd-app1-app:dev-latest
     container_name: cicd-app1-dev-app
     ports:
       - 18080:8080
