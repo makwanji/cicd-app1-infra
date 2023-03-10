@@ -2,7 +2,7 @@
 version: '3.7'
 services:
   cicd-app1-dev-web:
-    image: nginx
+    image: makwanji/cicd-app1-web:dev-latest
     container_name: cicd-app1-dev-web
     ports:
       - 180:80
