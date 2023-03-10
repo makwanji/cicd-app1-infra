@@ -2,12 +2,12 @@
 version: '3.7'
 services:
   cicd-app1-sit-web:
-    image: nginx
+    image: makwanji/cicd-app1-web:sit-latest
     container_name: cicd-app1-sit-web
     ports:
       - 280:80
   cicd-app1-sit-app:
-    image: nginx
+    image: makwanji/cicd-app1-app:sit-latest
     container_name: cicd-app1-sit-app
     ports:
       - 28080:8080

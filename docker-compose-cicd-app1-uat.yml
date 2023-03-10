@@ -2,17 +2,17 @@
 version: '3.7'
 services:
   cicd-app1-uat-web:
-    image: nginx
+    image: makwanji/cicd-app1-web:uat-latest
     container_name: cicd-app1-uat-web
     ports:
       - 380:80
   cicd-app1-uat-app:
-    image: nginx
+    image: makwanji/cicd-app1-app:uat-latest
     container_name: cicd-app1-uat-app
     ports:
       - 38080:8080
   cicd-app1-uat-db:
-    image: makwanji/cicd-app1-db:sit-latest
+    image: makwanji/cicd-app1-db:uat-latest
     container_name: cicd-app1-uat-db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
