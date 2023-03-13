@@ -1,29 +1,52 @@
----
-version: '3.7'
+version: "3.7"
 services:
-  cicd-app1-dev-web:
-    image: makwanji/cicd-app1-web:dev-latest
-    container_name: cicd-app1-dev-web
-    ports:
-      - 180:80
-  cicd-app1-dev-app:
-    image: makwanji/cicd-app1-app:dev-latest
-    container_name: cicd-app1-dev-app
-    ports:
-      - 18080:8080
-  cicd-app1-dev-db:
-    image: makwanji/cicd-app1-db:dev-latest
-    container_name: cicd-app1-dev-db
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - 13306:3306
-    volumes:
-      - cicd-app1-dev-db-data:/var/lib/mysql
-volumes:
-  cicd-app1-dev-db-data:
-networks:
-  default:
-    external: true
-    name: cicd
+    mysql-db:
+        image: 'mysql:8.0.32'
+        restart: always
+        container_name: 'mysql-db'
+        hostname: 'mysql-db'
+        working_dir: /var/www
+        ports:
+            - '3308:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root#23'
+            MYSQL_DATABASE: 'music'
+            MYSQL_USER: 'music'
+            MYSQL_PASSWORD: 'music'
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+            - mysql_data:/var/lib/mysql
+    rts-app:
+        image: 'makwanji/cicd-app1-app:latest'
+        restart: always
+        container_name: 'rts-app'
+        hostname: 'rts-app'
+        working_dir: /var/www
+        depends_on:
+            - mysql-db
+        ports:
+            - '8085:80'
+        volumes:
+            - ./config/app.env:/var/www/rts-app/.env
+            - ./config/rts-app.conf:/etc/apache2/sites-enabled/000-default.conf
 
+    rts-web:
+        image: 'makwanji/cicd-app1-web:latest'
+        restart: always
+        container_name: 'rts-web'
+        hostname: 'rts-web'
+        working_dir: /var/www
+        ports:
+            - '8086:80'
+        volumes:
+            - ./config/web.env:/var/www/rts-web/.env
+            - ./config/rts-web.conf:/etc/apache2/sites-enabled/000-default.conf
+volumes:
+    mysql_data:
+    rts_app:
+    rts_web:
+
+networks:
+    default:
+        external: true
+        name: cicd
