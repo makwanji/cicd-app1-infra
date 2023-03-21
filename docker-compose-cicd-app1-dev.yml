@@ -1,29 +1,47 @@
----
-version: '3.7'
+version: "3.7"
 services:
-  cicd-app1-dev-web:
-    image: makwanji/cicd-app1-web:dev-latest
-    container_name: cicd-app1-dev-web
-    ports:
-      - 180:80
-  cicd-app1-dev-app:
-    image: makwanji/cicd-app1-app:dev-latest
-    container_name: cicd-app1-dev-app
-    ports:
-      - 18080:8080
   cicd-app1-dev-db:
-    image: makwanji/cicd-app1-db:dev-latest
-    container_name: cicd-app1-dev-db
+    image: 'cicd-app1-db'
+    restart: always
+    container_name: 'cicd-app1-dev-db'
+    hostname: 'cicd-app1-dev-db'
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: supersecret
     ports:
-      - 13306:3306
+      - '13308:3306'
     volumes:
-      - cicd-app1-dev-db-data:/var/lib/mysql
+      - mysql-dev-data:/var/lib/mysql
+  cicd-app1-dev-app:
+    image: 'rts-app:1.0'
+    restart: always
+    container_name: 'cicd-app1-dev-app'
+    hostname: 'cicd-app1-dev-app'
+    environment:
+      DB_CONNECTION: 'mysql'
+      DB_HOST: 'cicd-app1-dev-db'
+      DB_PORT: '3306'
+      DB_DATABASE: 'music'
+      DB_USERNAME: 'root'
+      DB_PASSWORD: 'supersecret'
+    depends_on:
+      - cicd-app1-dev-db
+    ports:
+      - '8000:80'
+  cicd-app1-dev-web:
+    image: 'rts-app:1.0'
+    restart: always
+    container_name: 'cicd-app1-dev-web'
+    hostname: 'cicd-app1-dev-web'
+    environment:
+      API_URL: 'http://cicd-app1-dev-app'
+    depends_on:
+      - cicd-app1-dev-db
+      - cicd-app1-dev-app
+    ports:
+      - '8090:80'
 volumes:
-  cicd-app1-dev-db-data:
+  mysql-dev-data:
 networks:
   default:
-    external: true
-    name: cicd
-
+      external: true
+      name: cicd-app1
