@@ -1,52 +1,47 @@
 version: "3.7"
 services:
-    mysql-db:
-        image: 'mysql:8.0.32'
-        restart: always
-        container_name: 'mysql-db'
-        hostname: 'mysql-db'
-        working_dir: /var/www
-        ports:
-            - '3308:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD: 'root#23'
-            MYSQL_DATABASE: 'music'
-            MYSQL_USER: 'music'
-            MYSQL_PASSWORD: 'music'
-        volumes:
-            - ./dump:/docker-entrypoint-initdb.d
-            - mysql_data:/var/lib/mysql
-    rts-app:
-        image: 'makwanji/cicd-app1-app:latest'
-        restart: always
-        container_name: 'rts-app'
-        hostname: 'rts-app'
-        working_dir: /var/www
-        depends_on:
-            - mysql-db
-        ports:
-            - '8085:80'
-        volumes:
-            - ./config/app.env:/var/www/rts-app/.env
-            - ./config/rts-app.conf:/etc/apache2/sites-enabled/000-default.conf
-
-    rts-web:
-        image: 'makwanji/cicd-app1-web:latest'
-        restart: always
-        container_name: 'rts-web'
-        hostname: 'rts-web'
-        working_dir: /var/www
-        ports:
-            - '8086:80'
-        volumes:
-            - ./config/web.env:/var/www/rts-web/.env
-            - ./config/rts-web.conf:/etc/apache2/sites-enabled/000-default.conf
+  cicd-app1-dev-db:
+    image: 'cicd-app1-db'
+    restart: always
+    container_name: 'cicd-app1-dev-db'
+    hostname: 'cicd-app1-dev-db'
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecret
+    ports:
+      - '13308:3306'
+    volumes:
+      - mysql-dev-data:/var/lib/mysql
+  cicd-app1-dev-app:
+    image: 'rts-app:1.0'
+    restart: always
+    container_name: 'cicd-app1-dev-app'
+    hostname: 'cicd-app1-dev-app'
+    environment:
+      DB_CONNECTION: 'mysql'
+      DB_HOST: 'cicd-app1-dev-db'
+      DB_PORT: '3306'
+      DB_DATABASE: 'music'
+      DB_USERNAME: 'root'
+      DB_PASSWORD: 'supersecret'
+    depends_on:
+      - cicd-app1-dev-db
+    ports:
+      - '8000:80'
+  cicd-app1-dev-web:
+    image: 'rts-app:1.0'
+    restart: always
+    container_name: 'cicd-app1-dev-web'
+    hostname: 'cicd-app1-dev-web'
+    environment:
+      API_URL: 'http://cicd-app1-dev-app'
+    depends_on:
+      - cicd-app1-dev-db
+      - cicd-app1-dev-app
+    ports:
+      - '8090:80'
 volumes:
-    mysql_data:
-    rts_app:
-    rts_web:
-
+  mysql-dev-data:
 networks:
-    default:
-        external: true
-        name: cicd
+  default:
+      external: true
+      name: cicd-app1
