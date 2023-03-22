@@ -16,13 +16,7 @@ services:
     restart: always
     container_name: 'cicd-app1-prod-app'
     hostname: 'cicd-app1-prod-app'
-    environment:
-      DB_CONNECTION: 'mysql'
-      DB_HOST: 'cicd-app1-prod-db'
-      DB_PORT: '3306'
-      DB_DATABASE: 'music'
-      DB_USERNAME: 'root'
-      DB_PASSWORD: 'supersecret'
+    env_file: ./config/app1-prod-app.env
     depends_on:
       - cicd-app1-prod-db
     ports:
@@ -32,9 +26,7 @@ services:
     restart: always
     container_name: 'cicd-app1-prod-web'
     hostname: 'cicd-app1-prod-web'
-    environment:
-      API_URL: 'http://cicd-app1-prod-app'
-      APP_ENV: PROD
+    env_file: ./config/app1-dev-web.env
     depends_on:
       - cicd-app1-prod-db
       - cicd-app1-prod-app
