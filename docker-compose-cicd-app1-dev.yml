@@ -28,7 +28,7 @@ services:
     ports:
       - '8000:80'
   cicd-app1-dev-web:
-    image: 'rts-app:1.0'
+    image: 'rts-web:1.0'
     restart: always
     container_name: 'cicd-app1-dev-web'
     hostname: 'cicd-app1-dev-web'
