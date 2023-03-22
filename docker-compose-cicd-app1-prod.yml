@@ -10,7 +10,7 @@ services:
     ports:
       - '3306'
     volumes:
-      - mysql-dev-data:/var/lib/mysql
+      - mysql-prod-data:/var/lib/mysql
   cicd-app1-prod-app:
     image: 'rts-app:1.0'
     restart: always
@@ -41,7 +41,7 @@ services:
     ports:
       - '480:80'
 volumes:
-  mysql-dev-data:
+  mysql-prod-data:
 networks:
   default:
       external: true
