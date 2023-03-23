@@ -1,17 +1,17 @@
 version: "3.7"
 services:
   cicd-app1-dev-db:
-    image: 'cicd-app1-db'
+    image: 'makwanji/cicd-app1-db:dev-latest'
     restart: always
     container_name: 'cicd-app1-dev-db'
     hostname: 'cicd-app1-dev-db'
-    env_file: ./config/app1-dev-web.env
+    env_file: ./config/app1-dev-db.env
     ports:
       - '3306'
     volumes:
       - mysql-dev-data:/var/lib/mysql
   cicd-app1-dev-app:
-    image: 'rts-app:1.0'
+    image: 'makwanji/cicd-app1-app:dev-latest'
     restart: always
     container_name: 'cicd-app1-dev-app'
     hostname: 'cicd-app1-dev-app'
@@ -21,7 +21,7 @@ services:
     ports:
       - '80'
   cicd-app1-dev-web:
-    image: 'rts-web:1.0'
+    image: 'makwanji/cicd-app1-web:dev-latest'
     restart: always
     container_name: 'cicd-app1-dev-web'
     hostname: 'cicd-app1-dev-web'

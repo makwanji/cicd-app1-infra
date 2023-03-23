@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   cicd-app1-prod-db:
-    image: 'cicd-app1-db'
+    image: 'makwanji/cicd-app1-db:prod-latest'
     restart: always
     container_name: 'cicd-app1-prod-db'
     hostname: 'cicd-app1-prod-db'
@@ -12,7 +12,7 @@ services:
     volumes:
       - mysql-prod-data:/var/lib/mysql
   cicd-app1-prod-app:
-    image: 'rts-app:1.0'
+    image: 'makwanji/cicd-app1-app:prod-latest'
     restart: always
     container_name: 'cicd-app1-prod-app'
     hostname: 'cicd-app1-prod-app'
@@ -22,7 +22,7 @@ services:
     ports:
       - '80'
   cicd-app1-prod-web:
-    image: 'rts-web:1.0'
+    image: 'makwanji/cicd-app1-web:prod-latest'
     restart: always
     container_name: 'cicd-app1-prod-web'
     hostname: 'cicd-app1-prod-web'

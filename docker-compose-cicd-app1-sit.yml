@@ -1,17 +1,17 @@
 version: "3.7"
 services:
   cicd-app1-sit-db:
-    image: 'cicd-app1-db'
+    image: 'makwanji/cicd-app1-db:sit-latest'
     restart: always
     container_name: 'cicd-app1-sit-db'
     hostname: 'cicd-app1-sit-db'
-    env_file: ./config/app1-sit-web.env
+    env_file: ./config/app1-sit-db.env
     ports:
       - '3306'
     volumes:
       - mysql-sit-data:/var/lib/mysql
   cicd-app1-sit-app:
-    image: 'rts-app:1.0'
+    image: 'makwanji/cicd-app1-app:sit-latest'
     restart: always
     container_name: 'cicd-app1-sit-app'
     hostname: 'cicd-app1-sit-app'
@@ -21,7 +21,7 @@ services:
     ports:
       - '80'
   cicd-app1-sit-web:
-    image: 'rts-web:1.0'
+    image: 'makwanji/cicd-app1-web:sit-latest'
     restart: always
     container_name: 'cicd-app1-sit-web'
     hostname: 'cicd-app1-sit-web'

@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   cicd-app1-uat-db:
-    image: 'cicd-app1-db'
+    image: 'makwanji/cicd-app1-db:uat-latest'
     restart: always
     container_name: 'cicd-app1-uat-db'
     hostname: 'cicd-app1-uat-db'
@@ -11,7 +11,7 @@ services:
     volumes:
       - mysql-uat-data:/var/lib/mysql
   cicd-app1-uat-app:
-    image: 'rts-app:1.0'
+    image: 'makwanji/cicd-app1-app:uat-latest'
     restart: always
     container_name: 'cicd-app1-uat-app'
     hostname: 'cicd-app1-uat-app'
@@ -21,7 +21,7 @@ services:
     ports:
       - '80'
   cicd-app1-uat-web:
-    image: 'rts-web:1.0'
+    image: 'makwanji/cicd-app1-web:uat-latest'
     restart: always
     container_name: 'cicd-app1-uat-web'
     hostname: 'cicd-app1-uat-web'
